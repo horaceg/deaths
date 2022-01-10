@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Dict, List, Literal
 
 import numpy as np
 import pandas as pd
@@ -7,7 +7,7 @@ from scipy.interpolate import interp1d
 
 app = FastAPI()
 
-ex2 = pd.read_parquet("ex_df.parquet")
+ex2 = pd.read_parquet("data/ex_df.parquet")
 
 
 def interp_bounds(df: pd.DataFrame):
@@ -33,8 +33,14 @@ def interp_bounds(df: pd.DataFrame):
     return f
 
 
-@app.get("/remaining/")
-async def remaining(
+@app.get("/countries/", response_model=List[str])
+def countries():
+    countries = ex2.index.get_level_values("location").unique().tolist()
+    return countries
+
+
+@app.get("/remaining/", response_model=Dict[str, float])
+def remaining(
     country: str,
     current: float,
     year: int = 2019,

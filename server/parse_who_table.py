@@ -29,4 +29,4 @@ def make_ex() -> pd.DataFrame:
 
 if __name__ == "__main__":
     ex2 = make_ex()
-    ex2.to_parquet("ex_df.parquet")
+    ex2.to_parquet("data/ex_df.parquet")
