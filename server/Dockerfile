@@ -5,4 +5,4 @@ COPY ./requirements.txt /app/
 RUN pip install -U pip && pip install -Ur requirements.txt
 
 COPY ./app /app
-COPY ./data /data
+COPY ./data /app/data
