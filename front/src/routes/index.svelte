@@ -24,7 +24,7 @@
 	}
 
 	async function getCountries() {
-		const res = await fetch(`http://127.0.0.1:8000/countries/`);
+		const res = await fetch(`http://deathclock.fly.dev/countries/`);
 		const countries = await res.json();
 
 		if (res.ok) {
@@ -36,7 +36,7 @@
 
 	async function getRemaining(country, sex, currentAge) {
 		const res = await fetch(
-			`http://127.0.0.1:8000/remaining/?country=${country}&sex=${sex}&current=${currentAge}&year=2019`
+			`http://deathclock.fly.dev/remaining/?country=${country}&sex=${sex}&current=${currentAge}&year=2019`
 		);
 		const remaining = await res.json();
 
