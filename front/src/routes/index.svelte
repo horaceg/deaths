@@ -1,6 +1,5 @@
 <script>
 	import { onMount } from 'svelte';
-	import { blur, crossfade, scale, draw, fade } from 'svelte/transition';
 	import Clock from '$lib/Clock.svelte';
 	import Inputs from '$lib/Inputs.svelte';
 
@@ -56,7 +55,7 @@
 
 <div>
 	<p>Current Age: {currentAge.toFixed(1)} years</p>
-	Remaining life expectancy: <strong>{remaining.toFixed(1)}</strong> years, that is <strong>{((100 * remaining) / (currentAge + remaining)).toFixed(1)}%</strong> of you life remaining.
+	Remaining life expectancy: <strong>{remaining.toFixed(1)}</strong> years, that is <strong>{((100 * remaining) / (currentAge + remaining)).toFixed(1)}%</strong> of your life remaining.
 </div>
 <div class="outputs">
 	<div class="clock"><Clock /></div>
