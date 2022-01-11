@@ -17,6 +17,8 @@ origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://localhost:3000",
+    "http://deaths.pages.dev",
+    "https://deaths.pages.dev",
 ]
 
 app.add_middleware(
