@@ -55,7 +55,8 @@
 
 <div>
 	<p>Current Age: {currentAge.toFixed(1)} years</p>
-	Remaining life expectancy: <strong>{remaining.toFixed(1)}</strong> years, that is <strong>{((100 * remaining) / (currentAge + remaining)).toFixed(1)}%</strong> of your life remaining.
+	Remaining life expectancy:<strong>{remaining.toFixed(1)}</strong> years, that is
+	<strong>{((100 * remaining) / (currentAge + remaining)).toFixed(1)}%</strong> of your life remaining.
 </div>
 <div class="outputs">
 	<div class="clock"><Clock /></div>

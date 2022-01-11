@@ -3,13 +3,13 @@ from typing import Dict, List, Literal
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from scipy.interpolate import interp1d
 
 app = FastAPI()
 
 ex2 = pd.read_parquet("data/ex_df.parquet")
 
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
