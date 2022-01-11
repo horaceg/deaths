@@ -9,6 +9,24 @@ app = FastAPI()
 
 ex2 = pd.read_parquet("data/ex_df.parquet")
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 def interp_bounds(df: pd.DataFrame):
     interpolated = interp1d(
@@ -39,7 +57,7 @@ def countries():
     return countries
 
 
-@app.get("/remaining/", response_model=Dict[str, float])
+@app.get("/remaining/", response_model=float)
 def remaining(
     country: str,
     current: float,
@@ -49,4 +67,4 @@ def remaining(
     subset = ex2.loc[(country, year, sex), :]
     f = interp_bounds(subset)
     rem = f(current)
-    return {"remaining": rem}
+    return rem
