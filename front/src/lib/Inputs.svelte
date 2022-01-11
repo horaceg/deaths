@@ -7,7 +7,13 @@
 
 <div>
 	<label for="birth-date">Birth:</label>
-	<input id="birth-date" type="date" bind:value={birth} />
+	<input
+		id="birth-date"
+		type="date"
+		bind:value={birth}
+		min="1900-01-01"
+		max={new Date().toISOString().split('T')[0]}
+	/>
 </div>
 
 <div>
