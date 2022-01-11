@@ -1,7 +1,10 @@
 <script>
+	import { dev } from '$app/env';
 	import { onMount } from 'svelte';
 	import Clock from '$lib/Clock.svelte';
 	import Inputs from '$lib/Inputs.svelte';
+
+	let apiUrl = dev ? 'http://localhost:8000' : 'https://deathclock.fly.dev';
 
 	let currentAge = 40;
 	let country = 'France';
@@ -23,7 +26,7 @@
 	}
 
 	async function getCountries() {
-		const res = await fetch(`https://deathclock.fly.dev/countries/`);
+		const res = await fetch(`${apiUrl}/countries/`);
 		const countries = await res.json();
 
 		if (res.ok) {
@@ -35,7 +38,7 @@
 
 	async function getRemaining(country, sex, currentAge) {
 		const res = await fetch(
-			`https://deathclock.fly.dev/remaining/?country=${country}&sex=${sex}&current=${currentAge}&year=2019`
+			`${apiUrl}/remaining/?country=${country}&sex=${sex}&current=${currentAge}&year=2019`
 		);
 		const remaining = await res.json();
 
