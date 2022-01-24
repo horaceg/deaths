@@ -1,8 +1,8 @@
 <script>
 	import { dev } from '$app/env';
-	import { onMount } from 'svelte';
 	import Clock from '$lib/Clock.svelte';
 	import Inputs from '$lib/Inputs.svelte';
+	import { onMount } from 'svelte';
 
 	let apiUrl = dev ? 'http://localhost:8000' : 'https://deathclock.fly.dev';
 
@@ -54,27 +54,58 @@
 	});
 </script>
 
-<Inputs bind:birth bind:sex {countries} bind:country />
+<main>
+	<div class="inputs">
+		<Inputs bind:birth bind:sex {countries} bind:country />
+	</div>
 
-<div>
-	<p>Current Age: {currentAge.toFixed(1)} years</p>
-	Remaining life expectancy:<strong>{remaining.toFixed(1)}</strong> years, that is
-	<strong>{((100 * remaining) / (currentAge + remaining)).toFixed(1)}%</strong> of your life remaining.
-</div>
-<div class="outputs">
+	<div class="hourglass" />
+
+	<div class="outputs">
+		<div>
+			<p>Current Age: {currentAge.toFixed(1)} years</p>
+			<p>Remaining life expectancy: <strong>{remaining.toFixed(1)}</strong> years.</p>
+			<p>
+				That is
+				<strong>{((100 * remaining) / (currentAge + remaining)).toFixed(1)}%</strong> of your life remaining.
+			</p>
+		</div>
+		<p>
+			<strong>
+				{(remaining * 24 * 60 * 60 * 365).toLocaleString('en-US')}
+			</strong> seconds remaining.
+		</p>
+	</div>
 	<div class="clock"><Clock /></div>
-	<strong>
-		{(remaining * 24 * 60 * 60 * 365).toLocaleString('en-US')}
-	</strong> seconds remaining.
-</div>
+</main>
 
 <style>
+	* {
+		margin: 0;
+		padding: 0;
+		background-color: black;
+	}
+
 	.clock {
-		height: 25%;
-		width: 25%;
+		max-width: 500px;
+		margin: 0 auto;
 	}
 
 	.outputs {
-		display: flexbox;
+		margin: 10px auto;
+		max-width: 500px;
+		text-align: center;
+		padding: 10px;
+		color: white;
+	}
+
+	p {
+		font-size: 20px;
+	}
+
+	.inputs {
+		background-color: steelblue;
+		color: white;
+		font-size: 20px;
 	}
 </style>
