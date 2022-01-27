@@ -77,13 +77,50 @@
 		</p>
 	</div>
 	<div class="clock"><Clock /></div>
+	<footer>
+		<div class="source">
+			<p>
+				<a
+					href="https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-life-tables-by-country"
+					target="_blank">Source: World Health Organisation</a
+				>
+			</p>
+		</div>
+	</footer>
 </main>
 
 <style>
 	* {
 		margin: 0;
 		padding: 0;
+	}
+
+	main {
 		background-color: black;
+	}
+
+	footer {
+		background-color: steelblue;
+		color: white;
+		padding: 10px;
+	}
+
+	footer a {
+		color: white;
+	}
+
+	footer a:hover {
+		color: orange;
+	}
+
+	footer a:focus {
+		color: yellow;
+	}
+
+	.source {
+		margin: 0 auto;
+		max-width: 500px;
+		text-align: center;
 	}
 
 	.clock {
@@ -101,6 +138,8 @@
 
 	p {
 		font-size: 20px;
+		margin: 8px;
+		font-family: sans-serif;
 	}
 
 	.inputs {
