@@ -18,7 +18,7 @@
 	let currentAge = 40;
 	let country = 'France';
 	let sex = 'Female';
-	let birth = '1900-01-13';
+	let birth = '1980-01-13';
 	let countries = [country];
 	$: birthNumber = Date.parse(birth);
 	let remaining = 40;
