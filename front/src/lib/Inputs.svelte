@@ -46,4 +46,8 @@
 	.input {
 		padding: 15px;
 	}
+
+	select {
+		width: 100px;
+	}
 </style>

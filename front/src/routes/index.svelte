@@ -1,20 +1,48 @@
 <script>
-	import { dev } from '$app/env';
 	import Clock from '$lib/Clock.svelte';
 	import Inputs from '$lib/Inputs.svelte';
+	import * as aq from 'arquero';
+	import { op } from 'arquero';
 	import { onMount } from 'svelte';
 
-	let apiUrl = dev ? 'http://localhost:8000' : 'https://deathclock.fly.dev';
+	let expectancy = null;
+	let expectancy_localized = null;
+
+	aq.loadArrow(`/expectancy.arrow`)
+		.then((table) => {
+			expectancy = table;
+			// console.log(expectancy.print());
+		})
+		.catch((err) => console.log(err));
 
 	let currentAge = 40;
 	let country = 'France';
 	let sex = 'Female';
-	let birth = '1981-07-13';
-	let countries = [];
+	let birth = '1900-01-13';
+	let countries = [country];
 	$: birthNumber = Date.parse(birth);
 	let remaining = 40;
-	$: getRemaining(country, sex, currentAge).then((rem) => (remaining = rem));
-	$: getCountries().then((data) => (countries = data));
+	$: expectancy ? (remaining = getRemaining(expectancy_localized, currentAge)) : null;
+	$: expectancy
+		? (expectancy_localized = expectancy
+				.filter(aq.escape((d) => (d.location == country) & (d.sex == sex) & (d.period[0] == 2019)))
+				.derive({ mid: (d) => (d.lower + d.upper + 1) / 2 })
+				.derive({
+					lagged_remaining: op.lag('remaining'),
+					lagged_mid: op.lag('mid'),
+					lead_remaining: op.lead('remaining'),
+					lead_mid: op.lead('mid')
+				})
+				.impute({ lagged_mid: () => 0 })
+				.impute({ lead_mid: () => 150 }))
+		: null;
+
+	$: expectancy
+		? (countries = expectancy.rollup({ c: op.array_agg_distinct('location') }).get('c', 0))
+		: null;
+	$: (expectancy != null) & (country != null) ? console.log(remaining) : null;
+
+	// $: console.log(expectancy_localized?.print(20));
 
 	function ageFromBirth(birthNb) {
 		return (Date.now() - birthNb) / (1000 * 60 * 60 * 24 * 365);
@@ -24,28 +52,32 @@
 		currentAge = ageFromBirth(birthNumber);
 		setTimeout(updateAge, 1000);
 	}
-
-	async function getCountries() {
-		const res = await fetch(`${apiUrl}/countries/`);
-		const countries = await res.json();
-
-		if (res.ok) {
-			return countries;
-		} else {
-			throw new Error(countries);
-		}
+	function interp(low_mid, up_mid, low_rem, up_rem) {
+		let coef = (up_rem - low_rem) / (up_mid - low_mid);
+		return low_rem + coef * (currentAge - low_mid);
 	}
-
-	async function getRemaining(country, sex, currentAge) {
-		const res = await fetch(
-			`${apiUrl}/remaining/?country=${country}&sex=${sex}&current=${currentAge}&year=2019`
+	function getRemaining(expectancy_localized, currentAge) {
+		console.log(currentAge);
+		const basis = expectancy_localized.filter(
+			aq.escape((d) => d.lower <= currentAge && d.upper + 1 > currentAge)
 		);
-		const remaining = await res.json();
 
-		if (res.ok) {
-			return remaining;
+		const obj = basis.reify().objects()[0];
+
+		console.log(obj);
+
+		let interp_low = interp(obj.lagged_mid, obj.mid, obj.lagged_remaining, obj.remaining);
+
+		let interp_up = interp(obj.mid, obj.lead_mid, obj.remaining, obj.lead_remaining);
+
+		if (interp_low && isFinite(interp_up)) {
+			return (interp_low + interp_up) / 2;
+		} else if (isFinite(interp_up)) {
+			return interp_up;
+		} else if (interp_low) {
+			return obj.lagged_remaining * Math.exp(-(currentAge - obj.lagged_mid) / 11);
 		} else {
-			throw new Error(remaining);
+			throw new Error('Unknown');
 		}
 	}
 

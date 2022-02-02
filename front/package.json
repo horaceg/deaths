@@ -20,5 +20,9 @@
     "prettier-plugin-svelte": "^2.4.0",
     "svelte": "^3.44.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "apache-arrow": "^6.0.1",
+    "arquero": "^4.8.8"
+  }
 }
