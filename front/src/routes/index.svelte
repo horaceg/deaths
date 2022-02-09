@@ -40,7 +40,7 @@
 	$: expectancy
 		? (countries = expectancy.rollup({ c: op.array_agg_distinct('location') }).get('c', 0))
 		: null;
-	$: (expectancy != null) & (country != null) ? console.log(remaining) : null;
+	// $: (expectancy != null) & (country != null) ? console.log(remaining) : null;
 
 	// $: console.log(expectancy_localized?.print(20));
 
@@ -57,14 +57,14 @@
 		return low_rem + coef * (currentAge - low_mid);
 	}
 	function getRemaining(expectancy_localized, currentAge) {
-		console.log(currentAge);
+		// console.log(currentAge);
 		const basis = expectancy_localized.filter(
 			aq.escape((d) => d.lower <= currentAge && d.upper + 1 > currentAge)
 		);
 
 		const obj = basis.reify().objects()[0];
 
-		console.log(obj);
+		// console.log(obj);
 
 		let interp_low = interp(obj.lagged_mid, obj.mid, obj.lagged_remaining, obj.remaining);
 
@@ -157,7 +157,10 @@
 
 	.clock {
 		max-width: 500px;
-		margin: 0 auto;
+		margin: 20px 0;
+		align-items: center;
+		display: flex;
+		justify-content: center;
 	}
 
 	.outputs {

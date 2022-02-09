@@ -47,8 +47,8 @@
 
 <style>
 	svg {
-		width: 100%;
-		height: 100%;
+		width: 70%;
+		height: 80%;
 	}
 
 	.clock-face {
