@@ -157,7 +157,7 @@
 
 	.clock {
 		max-width: 500px;
-		margin: 20px 0;
+		margin: 20px auto;
 		align-items: center;
 		display: flex;
 		justify-content: center;
